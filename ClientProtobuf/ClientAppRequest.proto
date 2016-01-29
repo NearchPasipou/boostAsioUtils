@@ -1,0 +1,17 @@
+package ClientAppProto;
+
+message Request
+{
+    required uint32 sequence_id = 1;
+    required RequestType type = 2;
+
+    enum RequestType
+    {
+        QUERY_STATS = 1;
+    }
+
+    message GetFabricPathStatistics
+    {
+    }
+
+}

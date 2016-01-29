@@ -5,8 +5,8 @@
 #include "ProtobufSender.hpp"
 #include "ProtobufReceiver.hpp"
 
-#include "include/gen/ClientAppRequest.pb.h"
-#include "include/gen/ClientAppResponse.pb.h"
+#include "ClientAppRequest.pb.h"
+#include "ClientAppResponse.pb.h"
 
 using namespace BoostClient;
 using namespace BoostProtoSender;

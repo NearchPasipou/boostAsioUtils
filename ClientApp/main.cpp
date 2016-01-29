@@ -1,6 +1,6 @@
 #include "ClientApp.hpp"
 #define SERVER_ADDRESS "127.0.0.1"
-#define SERVER_PORT 67677
+#define SERVER_PORT 40000 
 #define RECONNECT_TIME 1
 #define RECONNECT_RETRIES 3
 

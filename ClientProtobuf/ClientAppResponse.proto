@@ -1,0 +1,19 @@
+package ClientAppProto;
+
+message Response
+{
+    required uint32 sequence_id = 1;
+    required Type type = 2;
+    optional Stats statistics = 3;
+    
+    enum Type
+    {
+        STATISTICS = 1;
+    }
+
+    message Stats
+    {
+        required uint32 total = 1;
+        required uint32 up = 2;
+    }
+}
