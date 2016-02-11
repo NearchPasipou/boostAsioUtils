@@ -1,4 +1,4 @@
-package ClientAppProto;
+package ProtoMsg;
 
 message Request
 {
@@ -10,7 +10,7 @@ message Request
         QUERY_STATS = 1;
     }
 
-    message GetFabricPathStatistics
+    message GetStats
     {
     }
 

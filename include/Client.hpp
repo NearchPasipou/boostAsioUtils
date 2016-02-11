@@ -4,6 +4,7 @@
 #include <boost/asio.hpp>
 #include <boost/bind.hpp>
 #include <boost/function.hpp>
+#include <iostream>
 
 #define DEFAULT_RECONNECT_TIME_IN_SECONDS 5
 

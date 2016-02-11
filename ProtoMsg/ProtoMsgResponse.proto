@@ -1,4 +1,4 @@
-package ClientAppProto;
+package ProtoMsg;
 
 message Response
 {

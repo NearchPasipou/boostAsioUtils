@@ -8,7 +8,7 @@ ClientApp::ClientApp(boost::asio::io_service& io, const Client::Config& cfg) :
     _pbr(_client.getSocket())
 {
     _statsRequest.set_sequence_id(0);
-    _statsRequest.set_type(ClientAppProto::Request::QUERY_STATS);
+    _statsRequest.set_type(ProtoMsg::Request::QUERY_STATS);
 }
 
 void ClientApp::run()

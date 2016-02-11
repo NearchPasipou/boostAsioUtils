@@ -2,6 +2,7 @@
 #define BOOST_PROTO_RECEIVER_HEADER
 
 #include <boost/asio.hpp>
+#include <boost/function.hpp>
 
 namespace BoostProtoReceiver
 {
@@ -9,7 +10,7 @@ namespace BoostProtoReceiver
     public:
         inline ProtobufReceiver(boost::asio::ip::tcp::socket& socket);
     
-        template <class MessageType, typename Callback> 
+        template <class MessageType, class Callback> 
         void asyncReceive(MessageType& msg, Callback cb);
     
     private:

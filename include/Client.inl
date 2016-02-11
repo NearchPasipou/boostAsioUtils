@@ -16,12 +16,14 @@ Client::Client(boost::asio::io_service& io, const Config& cfg) :
 
 void Client::initConnection(onClientConnectedCB_t onClientConnectedCB)
 {
+    std::cout << "initConnection!!" << std::endl;
     _onClientConnectedCB = onClientConnectedCB;
     _clientSocket.async_connect(_config._endPoint, boost::bind(&Client::onConnected, this, boost::asio::placeholders::error));
 }
 
 void Client::onConnected(const boost::system::error_code& ec)
 {
+    std::cout << "Onconnected!!" << std::endl;
     if (ec) {
         if (_config._numRetries--) {
             initReconnectTimer();
@@ -34,11 +36,13 @@ void Client::onConnected(const boost::system::error_code& ec)
 
 void Client::onReconnectTimer()
 {
+    std::cout << "OnReconnectTimer!!" << std::endl;
     _clientSocket.async_connect(_config._endPoint, boost::bind(&Client::onConnected, this, boost::asio::placeholders::error));
 }
 
 void Client::initReconnectTimer()
 {
+    std::cout << "InitReconnectTimer!!" << std::endl;
     _reconnectTimer.expires_from_now(boost::posix_time::seconds(_config._reconnectTime));
     _reconnectTimer.async_wait(boost::bind(&Client::onReconnectTimer, this));
 }

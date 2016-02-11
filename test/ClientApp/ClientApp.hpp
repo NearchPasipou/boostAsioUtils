@@ -5,8 +5,8 @@
 #include "ProtobufSender.hpp"
 #include "ProtobufReceiver.hpp"
 
-#include "ClientAppRequest.pb.h"
-#include "ClientAppResponse.pb.h"
+#include "ProtoMsgRequest.pb.h"
+#include "ProtoMsgResponse.pb.h"
 
 using namespace BoostClient;
 using namespace BoostProtoSender;
@@ -23,8 +23,8 @@ private:
     ProtobufSender   _pbs;
     ProtobufReceiver _pbr;
 
-    ClientAppProto::Request   _statsRequest;
-    ClientAppProto::Response  _statsResponse;
+    ProtoMsg::Request   _statsRequest;
+    ProtoMsg::Response  _statsResponse;
 
     void handleConnectionFailure(const std::string& reason);
     void onClientConnected(const boost::system::error_code& ec);

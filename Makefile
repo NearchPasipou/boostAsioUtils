@@ -1,7 +1,7 @@
 default-target: build
 
-PROTO_PATH = ClientProtobuf
-OUT_PATH = ClientProtobuf/gen
+PROTO_PATH = ProtoMsg
+OUT_PATH = ProtoMsg/gen
 
 CXX = g++
 
@@ -15,38 +15,47 @@ CXXFLAGS = --std=c++11 -g -Wall -Werror -Wextra
 	$(CXX) -c $(CXXFLAGS) $(IXXFLAGS) -MD -MP $< -o $@
 
 CXXFLAGS += -O0
-IXXFLAGS += -I./Client -I./ClientProtobuf/gen
-LDXXFLAGS += -lboost_system -lprotobuf 
+IXXFLAGS += -I./include -I./ProtoMsg/gen
+LDXXFLAGS +=  -lboost_system -lprotobuf 
 
 NAME = ClientApplication
 
-CLIENTAPPSRC = $(wildcard ClientApp/*.cpp)
+CLIENTAPPSRC = $(wildcard test/ClientApp/*.cpp)
 CLIENTAPPOBJ = $(patsubst %.cpp, %.o, $(CLIENTAPPSRC))
 
-ALLSRC = $(CLIENTAPPSRC)
-ALLOBJ = $(CLIENTAPPOBJ)
+DUMMYSERVERSRC = $(wildcard test/DummyServer/*.cpp)
+DUMMYSERVEROBJ = $(patsubst %.cpp, %.o, $(DUMMYSERVERSRC))
 
-DEPS = $(patsubst %.cpp, %.d, $(CLIENTAPPSRC))
+ALLSRC = $(CLIENTAPPSRC) $(DUMMYSERVERSRC)
+ALLOBJ = $(CLIENTAPPOBJ) $(DUMMYSERVEROBJ)
+
+DEPS = $(patsubst %.cpp, %.d, $(ALLSRC))
 
 proto: 
 	mkdir -p $(OUT_PATH)
-	protoc --proto_path=$(PROTO_PATH) --cpp_out=$(OUT_PATH) ClientProtobuf/ClientAppRequest.proto 
-	protoc --proto_path=$(PROTO_PATH) --cpp_out=$(OUT_PATH) ClientProtobuf/ClientAppResponse.proto
-	$(CXX) -c $(CXXFLAGS) $(IXXFLAGS) -MD -MP ClientProtobuf/gen/ClientAppRequest.pb.cc -o ClientProtobuf/gen/ClientAppRequest.o
-	$(CXX) -c $(CXXFLAGS) $(IXXFLAGS) -MD -MP ClientProtobuf/gen/ClientAppResponse.pb.cc -o ClientProtobuf/gen/ClientAppResponse.o
+	protoc --proto_path=$(PROTO_PATH) --cpp_out=$(OUT_PATH) ProtoMsg/ProtoMsgRequest.proto 
+	protoc --proto_path=$(PROTO_PATH) --cpp_out=$(OUT_PATH) ProtoMsg/ProtoMsgResponse.proto
+	$(CXX) -c $(CXXFLAGS) $(IXXFLAGS) -MD -MP ProtoMsg/gen/ProtoMsgRequest.pb.cc -o ProtoMsg/gen/ProtoMsgRequest.o
+	$(CXX) -c $(CXXFLAGS) $(IXXFLAGS) -MD -MP ProtoMsg/gen/ProtoMsgResponse.pb.cc -o ProtoMsg/gen/ProtoMsgResponse.o
 
-build: ClientApplication 
+build: ClientApplication DummyServer
 
 all: proto build
 
-ClientApplication: $(ALLOBJ)
-	$(CXX) $(LDXXFLAGS) $(ALLOBJ) ClientProtobuf/gen/ClientAppRequest.o ClientProtobuf/gen/ClientAppResponse.o -o $@
+ClientApplication: $(CLIENTAPPOBJ)
+	$(CXX) $(CLIENTAPPOBJ) ProtoMsg/gen/ProtoMsgRequest.o ProtoMsg/gen/ProtoMsgResponse.o $(LDXXFLAGS) -o $@
+
+DummyServer: $(DUMMYSERVEROBJ)
+	$(CXX) $(DUMMYSERVEROBJ) ProtoMsg/gen/ProtoMsgRequest.o ProtoMsg/gen/ProtoMsgResponse.o $(LDXXFLAGS) -o $@
 
 clean::
 	rm -f $(DEPS)
 	rm -f $(ALLOBJ)
 	rm -f ClientApplication
-	rm -rf ClientProtobuf/gen	
+	rm -f DummyServer 
+
+clean_all: clean
+	rm -rf ProtoMsg/gen
 
 -include $(DEPS)
 

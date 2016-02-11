@@ -1,0 +1,5 @@
+*.[oad]
+ClientApplication
+DummyServer
+ProtoMsg/gen/*
+

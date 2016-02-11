@@ -9,7 +9,7 @@ namespace BoostProtoSender
     public:
         inline ProtobufSender(boost::asio::ip::tcp::socket& socket);
     
-        template <class MessageType, typename Callback> 
+        template <class MessageType, class Callback> 
         void asyncSend(MessageType& msg, Callback cb);
     
     private:
@@ -18,7 +18,7 @@ namespace BoostProtoSender
         std::ostream                    _ostream;
     };
     
-    template <class MessageType, typename Callback> 
+    template <class MessageType, class Callback> 
     inline void ProtobufSender::asyncSend(MessageType& msg, Callback cb)
     {
         uint32_t size = htonl(msg.ByteSize());
